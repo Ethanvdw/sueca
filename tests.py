@@ -1,9 +1,9 @@
 import card
 
 def test_higher_than():
-    '''
+    """
     Tests card.higher_than
-    '''
+    """
     # Let the lead suit be Clubs and the trump suit be Spades
     lead_suit = 'C'
     trump_suit = 'S'

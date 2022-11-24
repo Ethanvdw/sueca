@@ -1,4 +1,3 @@
-import sueca_suits_ranks as ssr
 from card import *
 
 def parse_trick(cs: str) -> object:

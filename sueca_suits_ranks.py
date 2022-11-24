@@ -6,7 +6,7 @@ def valid_suit(s: str) -> bool:
 
 
 def valid_rank(r: int) -> bool:
-    '''
+    """
     Returns whether the rank r is valid in Sueca.
 
     Valid ranks in Sueca are:
@@ -20,22 +20,23 @@ def valid_rank(r: int) -> bool:
     - 'K' (King)
     - '7'
     - 'A' (Ace)
-    '''
+    """
     
     return r in ['2', '3', '4', '5', '6', 'Q', 'J', 'K', '7', 'A']
 
 
 def valid_card(cs: str) -> bool:
-    '''
+    """
     Returns whether the card string cs is valid.
-    '''
-    # Nuno might not want me to add a function, but it makes the code more readable.
+    """
+    # TODO Nuno might not want me to add a function, but it makes the code more readable.
     return len(cs) == 2 and valid_rank(cs[0]) and valid_suit(cs[1])
 
+
 def suit_full_name(s: str) -> str:
-    '''
+    """
     Returns the full name of the suit s.
-    '''
+    """
     suit_names = {
         'C': 'Clubs',
         'D': 'Diamonds',
@@ -50,7 +51,7 @@ def suit_full_name(s: str) -> str:
 
 
 def rank_points(r: str) -> int:
-    '''
+    """
     Returns the points associated with the rank r.
 
     In Sueca, the points associated with each rank are:
@@ -60,7 +61,7 @@ def rank_points(r: str) -> int:
     Jack = 3
     Queen = 2
     All other ranks = 0
-    '''
+    """
 
     points = {
         'A': 11,

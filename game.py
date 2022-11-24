@@ -1,13 +1,39 @@
-def run_game(fname: str, showCards: bool, showGame: bool) -> None:
-    '''
-    Takes the name of a game file, and two boolean values.
-    The first boolean indicates whether the cards should be shown to the console.
-    The second boolean indicates whether the game should be shown to the console.
-
-    This function parses the game file and runs the game. It indicates the score and winning pair at the end of the game.
-    '''
-    pass
+from card import *
 
 
-class Game():
-    pass
+class Game:
+
+    def __init__(self):
+        pass
+
+    def game_trump(self):
+        """
+        Returns the game's trump card as in instance of class Card.
+        """
+
+    def score(self):
+        """
+        Returns a tuple with the points won by each pair in the current game.
+        """
+        pass
+
+    def play_trick(self, t):
+        """
+        Adds the given trick t (an instance of class Trick) to the current game.
+        The following exceptions may be raised:
+        - CardAlreadyPlayed if a trick contains a card played in a previous round of the game.
+        - DealerDoesNotHoldTrumpCard if player 2 (the dealer) did not actually hold the game's trump card.
+        - IllegalCardPlayed if a card played in some round is illegal with respect to the lead suit, which caters for
+          the illegal cuts problem.
+        """
+        pass
+
+    def cards_of(self, p):
+        """
+        Returns a list of card instances held by player p (an integer between 1 and 4) in the current game.
+        Exception "ValueError" should be raised if the given player number is not valid.
+        """
+        pass
+
+    def game_tricks(self):
+        pass
