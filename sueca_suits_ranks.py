@@ -1,11 +1,11 @@
 def valid_suit(s: str) -> bool:
-    '''
+    """
     Returns whether the suit s is valid.
-    '''
-    return s in ['C', 'D', 'H', 'S']
+    """
+    return s in {'C', 'D', 'H', 'S'}
 
 
-def valid_rank(r: str) -> bool:
+def valid_rank(r):
     """
     Returns whether the rank r is valid in Sueca.
 
@@ -22,18 +22,10 @@ def valid_rank(r: str) -> bool:
     - 'A' (Ace)
     """
     
-    return r in ['2', '3', '4', '5', '6', 'Q', 'J', 'K', '7', 'A']
+    return r in {'2', '3', '4', '5', '6', 'Q', 'J', 'K', '7', 'A'}
 
 
-def valid_card(cs: str) -> bool:
-    """
-    Returns whether the card string cs is valid.
-    """
-    # TODO Nuno might not want me to add a function, but it makes the code more readable.
-    return len(cs) == 2 and valid_rank(cs[0]) and valid_suit(cs[1])
-
-
-def suit_full_name(s: str) -> str:
+def suit_full_name(s):
     """
     Returns the full name of the suit s.
     """
@@ -50,7 +42,7 @@ def suit_full_name(s: str) -> str:
     raise ValueError(f'Invalid suit symbol {s}')
 
 
-def rank_points(r: str) -> int:
+def rank_points(r):
     """
     Returns the points associated with the rank r.
 
@@ -80,7 +72,7 @@ def rank_points(r: str) -> int:
     raise ValueError(f'Invalid rank symbol {r}')
 
 
-def rank_higher_than(r1: str, r2: str) -> bool:
+def rank_higher_than(r1, r2):
     """
     Returns whether the rank r1 is higher than the rank r2.
     """

@@ -61,6 +61,10 @@ class TestTrick(unittest.TestCase):
     def test_trick_points(self):
         self.assertEqual(t.parse_trick("AH 2D 5H 2H").points(), 11)
         self.assertEqual(t.parse_trick("AS 2S 7S JS").points(), 24)
+        ts = t.parse_game_file("game1.sueca")[1]
+        correct_scores = [11, 15, 11, 13, 13, 20, 10, 14, 10, 3]
+        for position, i in enumerate(ts):
+            self.assertEqual(i.points(), correct_scores[position])
 
     def test_trick_winner(self):
         self.assertEqual(t.parse_trick("AH 2D 5H 2H").trick_winner("D"), 2)
@@ -91,6 +95,33 @@ class TestGame(unittest.TestCase):
         g1.play_trick(ts[0])
         # Use assertEqual to see if g1.score() outputs (0, 11)
         self.assertEqual(g1.score(), (0, 11))
+
+    def test_cards_of(self):
+        tc, ts = t.parse_game_file("game1.sueca")
+        g1 = g.Game(tc)
+        for i in ts:
+            g1.play_trick(i)
+        self.assertEqual(g1.cards_of(1)[0].show(), "AH")
+        self.assertEqual(g1.cards_of(2)[0].show(), "2D")
+        self.assertEqual(g1.cards_of(1)[-1].show(), "5C")
+        self.assertEqual(g1.cards_of(2)[-1].show(), "6S")
+        self.assertRaises(ValueError, g1.cards_of, 5)
+
+    def test_score(self):
+        tc, ts = t.parse_game_file("game1.sueca")
+        g1 = g.Game(tc)
+
+        g1.play_trick(ts[0])
+        g1.play_trick(ts[1])
+
+        self.assertEqual(g1.score(), (15, 11))
+
+        for t1 in ts[2:]:
+            g1.play_trick(t1)
+        self.assertEqual(g1.game_tricks()[-1].show(), "5C 6S 6H JS")
+
+        self.assertEqual(g1.score(), (76, 44))
+
 
 if __name__ == '__main__':
     unittest.main()
