@@ -25,9 +25,10 @@ class TestSuecaSuitsRanks(unittest.TestCase):
         self.assertRaises(ValueError, ssr.rank_points, '9')
 
     def test_rank_higher_than(self):
-        self.assertFalse(ssr.rank_higher_than('6', '3'))
+        self.assertTrue(ssr.rank_higher_than('6', '3'))
         self.assertTrue(ssr.rank_higher_than('K', 'Q'))
-        self.assertFalse(ssr.rank_higher_than('3', '2'))
+        self.assertFalse(ssr.rank_higher_than('2', '3'))
+        self.assertTrue(ssr.rank_higher_than('3', '2'))
         self.assertFalse(ssr.rank_higher_than('J', '7'))
         self.assertFalse(ssr.rank_higher_than('4', '4'))
         self.assertRaises(ValueError, ssr.rank_higher_than, '8', '7')
@@ -35,21 +36,22 @@ class TestSuecaSuitsRanks(unittest.TestCase):
 
 class TestCard(unittest.TestCase):
     def test_card_show(self):
-        self.assertEqual(c.parse_card('2C').show(), '2C')
-        self.assertRaises(Exception, c.parse_card, '8C')
-        self.assertRaises(Exception, c.parse_card, 'QSD')
-        self.assertRaises(Exception, c.parse_card, '7Q')
+        self.assertEqual(c.parseCard('2C').show(), '2C')
+        self.assertRaises(Exception, c.parseCard, '8C')
+        self.assertRaises(Exception, c.parseCard, 'QSD')
+        self.assertRaises(Exception, c.parseCard, '7Q')
 
     def test_card_points(self):
-        self.assertEqual(c.parse_card('2C').points(), 0)
-        self.assertEqual(c.parse_card('KS').points(), 4)
-        self.assertRaises(Exception, c.parse_card, '9D')
+        self.assertEqual(c.parseCard('2C').points(), 0)
+        self.assertEqual(c.parseCard('KS').points(), 4)
+        self.assertRaises(Exception, c.parseCard, '9D')
 
     def test_card_higher_than(self):
-        self.assertTrue(c.parse_card('KS').higher_than(c.parse_card('2C'), "S", "D"))
-        self.assertTrue(c.parse_card('KS').higher_than(c.parse_card('JS'), "S", "D"))
-        self.assertFalse(c.parse_card('KS').higher_than(c.parse_card('2D'), "S", "D"))
-        self.assertFalse(c.parse_card('7S').higher_than(c.parse_card('2C'), "C", "D"))
+        self.assertTrue(c.parseCard('KS').higher_than(c.parseCard('2C'), "S", "D"))
+        self.assertTrue(c.parseCard('KS').higher_than(c.parseCard('JS'), "S", "D"))
+        self.assertTrue(c.parseCard('6S').higher_than(c.parseCard('5S'), "S", "H"))
+        self.assertFalse(c.parseCard('KS').higher_than(c.parseCard('2D'), "S", "D"))
+        self.assertFalse(c.parseCard('7S').higher_than(c.parseCard('2C'), "C", "D"))
 
 
 class TestTrick(unittest.TestCase):

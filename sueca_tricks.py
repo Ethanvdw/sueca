@@ -1,7 +1,7 @@
 import sueca_cards as c
 
 
-def parse_trick(cs: str) -> object:
+def parse_trick(cs):
     """
     Takes a trick string and returns a trick object
     A trick object is a list of card objects
@@ -12,7 +12,7 @@ def parse_trick(cs: str) -> object:
         raise ValueError(f"TrickInvalid: Trick {cs} is not valid. \n"
                          f"A trick string representation must have 4 cards")
     # Parse each card string into a card object
-    parsed_cards = [c.parse_card(i) for i in cards]
+    parsed_cards = [c.parseCard(i) for i in cards]
     return Trick(parsed_cards)
 
 
@@ -27,16 +27,15 @@ def parse_game_file(file_name):
         # The cards are the rest of the lines
         cards = [line.strip() for line in f.readlines()]
     # Return the trump as a card object, and the tricks as a list of trick objects
-    return c.parse_card(trick), [parse_trick(i) for i in cards]
+    return c.parseCard(trick), [parse_trick(i) for i in cards]
 
 
 class Trick:
-
     """
     A trick contains 4 cards and a trump card.
     """
 
-    def __init__(self, cs: list):
+    def __init__(self, cs):
         """
         Initializes the trick with the trick string cs.
         """
@@ -50,16 +49,14 @@ class Trick:
         return sum(card.points() for card in self.trick_cards)
 
     def trick_winner(self, trump):
-        # Compares all the cards using the higher_than method of the card class.
-        # To find the winner, we need to find the card that is higher than all the other cards.
-        # We can do this by comparing each card to all the other cards.
-
-        # The lead suit is the suit of the first card in the trick.
+        """
+        Computes the winner of the trick, given the trump card.
+        """
         lead_card = self.trick_cards[0]
 
         # The winner is the highest value card in the trick.
         winner = self.trick_cards[0]
-        for card in self.trick_cards:
+        for card in self.trick_cards[1:]:
             if card.higher_than(winner, lead_card, trump):
                 winner = card
 

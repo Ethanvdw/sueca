@@ -21,7 +21,7 @@ def valid_rank(r):
     - '7'
     - 'A' (Ace)
     """
-    
+
     return r in {'2', '3', '4', '5', '6', 'Q', 'J', 'K', '7', 'A'}
 
 
@@ -76,4 +76,15 @@ def rank_higher_than(r1, r2):
     """
     Returns whether the rank r1 is higher than the rank r2.
     """
-    return rank_points(r1) > rank_points(r2)
+    # Lowest rank is 2
+    # Highest rank is Ace
+    rank_order = ['2', '3', '4', '5', '6', 'Q', 'J', 'K', '7', 'A']
+
+    try:
+        return rank_order.index(r1) > rank_order.index(r2)
+    except ValueError as e:
+        # Find which rank is invalid
+        if r1 not in rank_order:
+            raise ValueError(f'Invalid rank symbol {r1}') from e
+        else:
+            raise ValueError(f'Invalid rank symbol {r2}') from e
