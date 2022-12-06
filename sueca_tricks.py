@@ -48,19 +48,20 @@ class Trick:
         # This is calculated by summing the points of each card in the trick.
         return sum(card.points() for card in self.trick_cards)
 
-    def trick_winner(self, trump):
+    def trick_winner(self, t):
         """
-        Computes the winner of the trick, given the trump card.
+        Takes a trump suit t and yields the trick’s winning
+        player, a number between 1 and 4, in the order in which the cards of the trick were
+        played.
         """
+        # For example, the trick “AH 2D 5H 2H” is won by the player who played
+        # 2D if the trump is diamonds, hence, in this case, 2 should be returned
         lead_card = self.trick_cards[0]
-
-        # The winner is the highest value card in the trick.
-        winner = self.trick_cards[0]
-        for card in self.trick_cards[1:]:
-            if card.higher_than(winner, lead_card, trump):
-                winner = card
-
-        # Return index of the winner
+        # Have lead card be a default winner
+        winner = lead_card
+        for i in range(1, 4):
+            if self.trick_cards[i].higher_than(winner, lead_card.suit, t):
+                winner = self.trick_cards[i]
         return self.trick_cards.index(winner) + 1
 
     def show(self):

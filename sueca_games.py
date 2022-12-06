@@ -21,30 +21,30 @@ class Game:
         Returns a pairs with the points won by each player pair.
         (odds and evens)
         """
-        # Somewhere in here a trick is being attributed to the wrong player
-        # This is because the turn order is not being updated correctly
-        # It can be fixed by updating the turn order after each trick is played
 
-        odd, even = 0, 0
-        # First find the winner of the previous trick. We can use this to find who went first in the next trick
-
+        odd = 0
+        even = 0
         for trick in self.tricks:
-
-            if trick is self.tricks[0]:
-                turn_order = self.player_order.get(1)
-            else:
+            turn_order = self.player_order.get(1)
+            if trick is not self.tricks[0]:
                 turn_order = self.player_order.get(self.tricks[-1].trick_winner(self.trump.suit))
 
             winner = turn_order.index(trick.trick_winner(self.trump.suit))
-            # If the winner is odd, add the points to the odd score
 
-            if winner in [0, 2]:
+            # If the winner is odd, add the points to the odd score
+            if winner % 2 == 0:
                 odd += trick.points()
             else:
                 even += trick.points()
+
         return odd, even
 
-    def play_trick(self, t):
+
+
+
+
+
+    def playTrick(self, t):
         """
         Adds the given trick t to the current game.
         The following exceptions should be raised:
@@ -87,18 +87,7 @@ class Game:
         if p not in range(1, 5):
             raise ValueError(f'{p} is not a valid player')
 
-        player_cards = []
-
-        for trick in self.tricks:
-            if trick == self.tricks[0]:
-                turn_order = self.player_order[1]
-            else:
-                turn_order = self.player_order[self.tricks[-1].trick_winner(self.trump.suit)]
-
-            player_turn = turn_order.index(p)
-            player_cards.append(trick.trick_cards[player_turn])
-
-        return player_cards
+        return [trick.trick_cards[p - 1] for trick in self.tricks]
 
     def game_tricks(self):
         """
