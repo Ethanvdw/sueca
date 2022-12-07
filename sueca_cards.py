@@ -1,21 +1,27 @@
 import sueca_suits_ranks as ssr
 
 
-def parse_card(cs):
+class CardInvalid(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
+def parseCard(cs):
     """
     Parse a card string into a card object
     """
     if len(cs) != 2:
-        raise ValueError(f"""CardInvalid: Card {cs} is not valid.
-                        A card string representation must have 2 characters""")
+        raise CardInvalid(f"Card {cs} is not valid. A card string representation must have 2 characters")
 
     if not ssr.valid_rank(cs[0]):
-        raise ValueError(f"""CardInvalid: Card {cs} is not valid.
-                        Invalid suit symbol {cs[0]}""")
+        # raise Exception(f"""CardInvalid: Card {cs} is not valid.
+        #                 Invalid suit symbol {cs[0]}""")
+        raise CardInvalid(f"Card {cs} is not valid. Invalid suit symbol {cs[0]}")
 
     if not ssr.valid_suit(cs[1]):
-        raise ValueError(f"""CardInvalid: Card {cs} is not valid.
-                            Invalid rank symbol {cs[1]}""")
+        # raise Exception(f"""CardInvalid: Card {cs} is not valid.
+        #                     Invalid rank symbol {cs[1]}""")
+        raise CardInvalid(f"Card {cs} is not valid. Invalid rank symbol {cs[1]}")
 
     return Card(cs)
 
