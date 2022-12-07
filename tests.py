@@ -72,6 +72,10 @@ class TestTrick(unittest.TestCase):
         self.assertEqual(t.parse_trick("AH 2D 5H 2H").trick_winner("D"), 2)
         self.assertEqual(t.parse_trick("AS 2S 7S JS").trick_winner("D"), 1)
         self.assertEqual(t.parse_trick("5C 6S 6H JS").trick_winner("D"), 1)
+        self.assertEqual(t.parse_trick("5C 6S 6H JS").trick_winner("S"), 4)
+        self.assertEqual(t.parse_trick("5C 6S 6H JS").trick_winner("H"), 3)
+        self.assertEqual(t.parse_trick("5C 6S 6H JS").trick_winner("C"), 1)
+        self.assertEqual(t.parse_trick("5C 6S 6H JS").trick_winner("C"), 1)
         tc, ts = t.parse_game_file("game1.sueca")
         self.assertEqual(tc.show(), "7D")
         self.assertEqual(ts[0].show(), "AH 2D 5H 2H")
@@ -94,7 +98,7 @@ class TestGame(unittest.TestCase):
     def test_play_tricks(self):
         tc, ts = t.parse_game_file("game1.sueca")
         g1 = g.Game(tc)
-        g1.play_trick(ts[0])
+        g1.playTrick(ts[0])
         # Use assertEqual to see if g1.score() outputs (0, 11)
         self.assertEqual(g1.score(), (0, 11))
 
@@ -102,7 +106,7 @@ class TestGame(unittest.TestCase):
         tc, ts = t.parse_game_file("game1.sueca")
         g1 = g.Game(tc)
         for i in ts:
-            g1.play_trick(i)
+            g1.playTrick(i)
         self.assertEqual(g1.cards_of(1)[0].show(), "AH")
         self.assertEqual(g1.cards_of(2)[0].show(), "2D")
         self.assertEqual(g1.cards_of(1)[-1].show(), "5C")
@@ -112,16 +116,17 @@ class TestGame(unittest.TestCase):
     def test_score(self):
         tc, ts = t.parse_game_file("game1.sueca")
         g1 = g.Game(tc)
-
-        g1.play_trick(ts[0])
-        g1.play_trick(ts[1])
-
-        self.assertEqual(g1.score(), (15, 11))
+        # self.assertEqual(g1.score(), (0, 0))
+        g1.playTrick(ts[0])
+        # self.assertEqual(g1.score(), (0, 11))
+        g1.playTrick(ts[1])
+        #
+        # self.assertEqual(g1.score(), (15, 11))
 
         for t1 in ts[2:]:
-            g1.play_trick(t1)
+            g1.playTrick(t1)
         self.assertEqual(g1.game_tricks()[-1].show(), "5C 6S 6H JS")
-
+        print("Pause")
         self.assertEqual(g1.score(), (76, 44))
 
 
