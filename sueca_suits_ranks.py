@@ -5,7 +5,7 @@ def valid_suit(s: str) -> bool:
     return s in {'C', 'D', 'H', 'S'}
 
 
-def valid_rank(r):
+def valid_rank(r: str) -> bool:
     """
     Returns whether the rank r is valid in Sueca.
 
@@ -25,7 +25,7 @@ def valid_rank(r):
     return r in {'2', '3', '4', '5', '6', 'Q', 'J', 'K', '7', 'A'}
 
 
-def suit_full_name(s):
+def suit_full_name(s: str) -> str:
     """
     Returns the full name of the suit s.
     """
@@ -42,7 +42,7 @@ def suit_full_name(s):
     raise ValueError(f'Invalid suit symbol {s}')
 
 
-def rank_points(r):
+def rank_points(r: str) -> int:
     """
     Returns the points associated with the rank r.
 
@@ -72,7 +72,7 @@ def rank_points(r):
     raise ValueError(f'Invalid rank symbol {r}')
 
 
-def rank_higher_than(r1, r2):
+def rank_higher_than(r1: str, r2: str) -> bool:
     """
     Returns whether the rank r1 is higher than the rank r2.
     """

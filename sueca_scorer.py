@@ -3,17 +3,21 @@ import os
 import sueca_tricks as t
 
 
-def GameFileCouldNotBeOpenedError(Exception):
+class GameFileCouldNotBeOpenedError(Exception):
     """Exception raised when the game file could not be opened."""
-
-    def __init__(self, fname):
+    def __init__(self, fname: str):
         self.fname = fname
 
     def __str__(self):
         return f"The game file {self.fname} could not be opened."
 
 
-def runGame(fname, showCards=False, showGame=False):
+class SuecaGameIncomplete(Exception):
+    def __init__(self, message: str):
+        self.message = message
+
+
+def runGame(fname: str, showCards=False, showGame=False) -> None:
     """Run a game of Sueca and return the score.
     fname: name of the file containing the game
     showCards: if True, show the cards played
@@ -24,29 +28,36 @@ def runGame(fname, showCards=False, showGame=False):
         raise GameFileCouldNotBeOpenedError(fname)
 
     # Check if the game has all 10 tricks
-    tc, ts = t.parse_game_file("game1.sueca")
+    tc, ts = t.parseGameFile("game1.sueca")
     if len(ts) != 10:
-        raise GameFileCouldNotBeOpenedError(fname)
+        raise SuecaGameIncomplete(f"This game only has {len(ts)} tricks.")
 
     game = g.Game(tc)
+    # fixer = 5
     for i in ts:
-        game.play_trick(i)
+        game.playTrick(i)
 
     score_a, score_b = game.score()
-    winner = "A" if score_a > score_b else "B"
-    print(f"Pair {winner} won the given sueca game")
+    # score_a += fixer
+    # score_b -= fixer
+    if score_a == score_b:
+        print("The game ended in a draw")
+    elif score_a > score_b:
+        print("Pair A won the given sueca game")
+    else:
+        print("Pair B won the given sueca game")
+
     print(f"Score: {score_a} - {score_b}")
 
     if showCards:
-        suit_full = {"C": "Clubs", "D": "Diamonds", "H": "Hearts", "S": "Spades"}
+        print(f"""Player 1: {" ".join([i.show() for i in game.cardsOf(1)])}
+Player 2: {" ".join([i.show() for i in game.cardsOf(2)])}
+Player 3: {" ".join([i.show() for i in game.cardsOf(3)])}
+Player 4: {" ".join([i.show() for i in game.cardsOf(4)])}""")
 
-        print(
-            f"""Trump card: {game.game_trump().show()} - {suit_full[game.game_trump().show()[1]]}
-Player 1: {" ".join([i.show() for i in game.cards_of(1)])}
-Player 2: {" ".join([i.show() for i in game.cards_of(2)])}
-Player 3: {" ".join([i.show() for i in game.cards_of(3)])}
-Player 4: {" ".join([i.show() for i in game.cards_of(4)])}""")
     if showGame:
+        suit_full = {"C": "Clubs", "D": "Diamonds", "H": "Hearts", "S": "Spades"}
+        print(f"Trump card: {game.gameTrump().show()} - {suit_full[game.gameTrump().show()[1]]}")
         # Print the tricks
         for i in range(10):
             print(f"{i + 1}: {ts[i].show()}")
@@ -63,7 +74,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # Parse the command line arguments
-    fname = sys.argv[1]
+    fname = sys.argv[-1]
     showCards = "-c" in sys.argv
     showGame = "-g" in sys.argv
 

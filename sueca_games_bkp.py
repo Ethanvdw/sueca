@@ -78,7 +78,7 @@ class Game:
         elif t.trick_winner(self.trump.suit) in [2, 4]:
             self.even += t.points()
 
-    def cardsOf(self, p: int) -> list:
+    def cardsOf(self, p : int) -> list:
         """
         Returns a list of the cards held by player p.
         Exception ValueError if p is not a valid player.
