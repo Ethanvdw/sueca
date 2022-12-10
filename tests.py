@@ -130,7 +130,7 @@ class TestGame(unittest.TestCase):
             g1.playTrick(t1)
         self.assertEqual(g1.gameTricks()[-1].show(), "5C 6S 6H JS")
         print("Pause")
-        self.assertEqual(g1.score(), (71, 49))
+        self.assertEqual(g1.score(), (76, 44))
 
 
 if __name__ == '__main__':

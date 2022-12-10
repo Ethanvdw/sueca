@@ -1,6 +1,7 @@
 from sueca_cards import Card
 from sueca_tricks import Trick
 
+
 class CardAlreadyPlayed(Exception):
     def __init__(self, message: str):
         self.message = message
@@ -21,6 +22,13 @@ class Game:
     def __init__(self, trump: Card) -> None:
         self.trump = trump
         self.tricks = []
+
+        self.starting_player = 1
+
+        self.player1 = []
+        self.player2 = []
+        self.player3 = []
+        self.player4 = []
 
         self.odd = 0
         self.even = 0
@@ -70,19 +78,24 @@ class Game:
 
         self.tricks.append(t)
 
-        # ---------------------------- Points ----------------------------
-        # If the trick is won by the odd player, add the points to the odd player
-        if t.trick_winner(self.trump.suit) in [1, 3]:
-            self.odd += t.points()
-        # If the trick is won by the even player, add the points to the even player
-        elif t.trick_winner(self.trump.suit) in [2, 4]:
-            self.even += t.points()
+        # --- Calculating player points ---
+        winning_player = (t.trick_winner(self.trump.suit) + self.starting_player - 1) % 4
+        self.starting_player = winning_player
+
+        # I could do points = t.points() to help performance slightly, but in my profiling the difference is negligible.
+        self.even += t.points() if winning_player % 2 == 0 else 0
+        self.odd += t.points() if winning_player % 2 != 0 else 0
+
+        # --- Updating player hands ---
+        # TODO: After a trick has been played, work out who played which card and add it to their hand
+
 
     def cardsOf(self, p: int) -> list:
         """
         Returns a list of the cards held by player p.
         Exception ValueError if p is not a valid player.
         """
+        # TODO Fix this
         if p not in range(1, 5):
             raise ValueError(f'{p} is not a valid player')
 
