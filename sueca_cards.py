@@ -15,7 +15,7 @@ def parseCard(cs: str) -> 'Card':
                           f"A card string representation must have 2 characters")
 
     if not ssr.valid_rank(cs[0]):
-        raise CardInvalid(f"Card {cs} is invalid."
+        raise CardInvalid(f"Card {cs} is invalid. "
                           f"Invalid suit symbol {cs[0]}")
 
     if not ssr.valid_suit(cs[1]):

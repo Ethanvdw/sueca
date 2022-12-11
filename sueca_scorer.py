@@ -1,10 +1,12 @@
 import sueca_games as g
 import os
 import sueca_tricks as t
+from sueca_cards import CardInvalid
 
 
 class GameFileCouldNotBeOpenedError(Exception):
     """Exception raised when the game file could not be opened."""
+
     def __init__(self, fname: str):
         self.fname = fname
 
@@ -28,18 +30,32 @@ def runGame(fname: str, showCards=False, showGame=False) -> None:
         raise GameFileCouldNotBeOpenedError(fname)
 
     # Check if the game has all 10 tricks
-    tc, ts = t.parseGameFile("game1.sueca")
-    if len(ts) != 10:
-        raise SuecaGameIncomplete(f"This game only has {len(ts)} tricks.")
+    try:
+        # Parse the game file
+        with open(fname) as f:
+            tc, ts = t.parseGameFile(fname)
+
+        # Check if the game has 10 tricks
+        if len(ts) != 10:
+            raise SuecaGameIncomplete(f"This game only has {len(ts)} tricks.")
+    except CardInvalid as e:
+        # Handle any errors raised by t.parseGameFile()
+        print(e)
+        return
 
     game = g.Game(tc)
-    # fixer = 5
     for i in ts:
-        game.playTrick(i)
+        try:
+            game.playTrick(i)
+        except g.CardAlreadyPlayed as e:
+            print(e)
+        except g.DealerDoesNotHoldTrumpCard as e:
+            print(e)
+        except g.IllegalCardPlayed as e:
+            print(e)
 
     score_a, score_b = game.score()
-    # score_a += fixer
-    # score_b -= fixer
+
     if score_a == score_b:
         print("The game ended in a draw")
     elif score_a > score_b:
@@ -79,3 +95,11 @@ if __name__ == "__main__":
     showGame = "-g" in sys.argv
 
     runGame(fname, showCards, showGame)
+
+# Known issues:
+# - The code can detect when an invalid card is played, but it doesn't know which player played it.
+#   Therefore, it can't penalise the cheating player by giving them 0 points.
+#   As a workaround, in the case of an invalid card, the code will print the error message and exit.
+
+# - DealerDoesNotHoldTrumpCard is not raised when the dealer doesn't hold the trump card.
+#   I'm not sure why, as my testing shows that it works as intended.
